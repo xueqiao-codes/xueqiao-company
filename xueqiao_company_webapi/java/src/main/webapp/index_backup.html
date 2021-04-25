@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>雪橇交易系统</title>
+		<link href="./public/css/bootstrap.min.css" rel="stylesheet">
+		<link href="./public/css/common.css" rel="stylesheet">
+		<link href="./public/img/logo60.png" rel="shortcut icon" />
+		<link href="./public/css/index.css" rel="stylesheet">
+
+	</head>
+
+	<body>
+		<div class="index_container" v-if="canRender">
+			<nav class="navbar navbar-light navbar-toggleable-md bg-faded global_header">
+				<a class="navbar-brand" href="/">
+					<img src="./public/img/logo60.png" width="30" height="30" class="d-inline-block align-top" alt=""> 雪橇交易系统
+				</a>
+				<ul class="navbar-nav">
+					<li v-bind:class="['nav-item', tabIndex == 0 ? 'active' : '']">
+						<a class="nav-link" href="javascript:;" @click="tabIndex=0">我的产品 <span class="sr-only">(current)</span></a>
+					</li>
+					<li v-bind:class="['nav-item', tabIndex == 1 ? 'active' : '']">
+						<a class="nav-link" href="javascript:;" @click="tabIndex=1">资料设置</a>
+					</li>
+					<li v-bind:class="['nav-item', tabIndex == 2 ? 'active' : '']">
+						<a class="nav-link" href="javascript:;" @click="tabIndex=2">密码修改</a>
+					</li>
+				</ul>
+				<div class="userinfo">
+					{=msgData.userName}
+					<a href="javascript:;" @click="logout">退出</a>
+				</div>
+			</nav>
+
+			<div class="index_page">
+				<div v-if="tabIndex==0">
+					<a v-bind:href="downloadUrl" class="btn btn-primary down_btn">下载客户端</a>
+					<div class="line"></div>
+
+					<dl>
+						<dt>模拟交易</dt>
+						<dd>&nbsp;&nbsp;&nbsp;&nbsp;模拟交易仅支持交易功能使用，下载客户端并在登录模式中选择模拟交易即可</dd>
+						<dd>
+							<div>
+								<label>团队名：</label>
+								<span>
+              {=msgData.simulationCom}
+            </span>
+							</div>
+							<div>
+								<label>账号：</label> {=msgData.simulationUserName}
+							</div>
+							<div>
+								<label>密码：</label> {=msgData.simulationPwd}
+							</div>
+							<div>
+								<label>到期时间：</label> {=msgData.simulationExpiredTime}
+							</div>
+						</dd>
+						<dt>正式交易</dt>
+						<dd>用户可以免费申请开通正式交易，试用期15天，试用期结束后每月费用为199元。</dd>
+						<dd>
+							<div>
+								<label>团队ID：</label> {=msgData.companyId}
+							</div>
+							<div>
+								<label>团队名：</label>
+								<span>
+              {=msgData.companyCode}
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <!-- <a href="javascript:;" @click="tabIndex=1"> 设置 </a> -->
+            </span>
+							</div>
+							<div>
+								<label>账号：</label> {=msgData.userName}
+							</div>
+							<div>
+								<label>有效期至：</label> {=msgData.expiredTime}
+							</div>
+							<div>
+								<label>服务状态：</label> {=msgData.applyStatus}
+							</div>
+						</dd>
+					</dl>
+					<button v-if="!msgData.applied" @click="openBtnShow=false, tryBtnShow=true" v-bind:class="{ active: tryBtnShow, btn: true, 'btn-success': true }">申请试用</button>
+					<button @click="openBtnShow=true, tryBtnShow=false" v-bind:class="{ active: openBtnShow, btn: true, 'btn-success': true }">立即购买</button>
+					<br />
+					<img v-if="tryBtnShow || openBtnShow" v-bind:class="{ tryBtnShow: (tryBtnShow || msgData.applied), index_line: true,  }" src="./public/img/index_line@3x.png" width="525" style="margin-top: 20px;" />
+
+					<div v-if="tryBtnShow || openBtnShow">
+						<div style="padding-top: 30px;" v-if="openBtnShow">
+							请直接拨打销售热线：0755-86213879，或填写并提交如下信息，我们将尽快联系您。
+						</div>
+						<div class="form">
+							<div class="form-group">
+								<label>公司</label>
+								<input type="text" class="form-control" placeholder="" v-model="formApplyCompany">
+							</div>
+							<div class="form-group">
+								<label>资金规模</label>
+								<input type="text" class="form-control" placeholder="" v-model="formApplyFund">
+							</div>
+							<div class="form-group">
+								<label>联系人</label>
+								<input type="text" class="form-control" placeholder="" v-model="formApplyContact">
+							</div>
+							<div class="form-group">
+								<label>联系电话</label>
+								<input type="text" class="form-control" placeholder="" v-model="formApplyTel">
+							</div>
+							<div class="form-group" style="padding-left: 210px;">
+								<button class="btn btn-primary" @click="apply">确认</button>&nbsp;&nbsp;
+								<button class="btn btn-secondary" @click="openBtnShow=false, tryBtnShow=false">取消</button>
+								<span class="form_tips right" v-if="applyTips"><img :src="'./public/img/right@3x.png'" />已提交申请</span>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div v-if="tabIndex==1" class="tab2">
+					<div class="form">
+						<div class="form-group">
+							<label>团队ID</label>
+							<span>{=msgData.companyId}</span>
+						</div>
+						<div class="form-group">
+							<label>团队名</label>
+							<span>
+            {=msgData.companyCode}
+            <a href="javascript:;" @click="companyCodeEditShow=true">修改</a>
+          </span>
+							<div class="clearfix"></div>
+							<div class="edit_main" v-if="companyCodeEditShow">
+								<img class="edit_line" src="./public/img/edit_line@3x.png" width="500" />
+								<div class="clearfix"></div>
+								<div class="main_inner">
+									<input type="text" class="form-control" placeholder="" style="margin-bottom: 20px;" v-model="formSaveCompanyCode">
+									<div>
+										<button class="btn btn-primary" @click="setCompanyCode">确认</button>
+										<button class="btn btn-secondary" @click="companyCodeEditShow=false">取消</button>
+										<span class="form_tips right" v-if="setCompanyCodeTips"><img :src="'./public/img/right@3x.png'" />{=setCompanyCodeMsg}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>当前账号</label>
+							<span>{=msgData.userName}</span>
+						</div>
+						<div class="form-group">
+							<label>邮箱</label>
+							<span>{=msgData.email} <!--<a href="#" @click="emailEditShow=true">验证/修改</a>--></span>
+							<div class="clearfix"></div>
+							<div class="edit_main" v-if="emailEditShow">
+								<img class="edit_line" src="./public/img/edit_line@3x.png" width="350" />
+								<div class="clearfix"></div>
+								<div class="main_inner">
+									<input type="text" class="form-control" placeholder="" style="margin-bottom: 20px;" v-model="email">
+									<div style="margin-bottom: 20px;">
+										<input type="text" class="form-control code_input" placeholder="">
+										<button class="btn btn-primary code_btn" @click="getEmailVerifyCode">获取验证码</button>
+									</div>
+									<div>
+										<button class="btn btn-primary">确认</button>
+										<button class="btn btn-secondary" @click="emailEditShow=false">取消</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>手机</label>
+							<span>{=msgData.tel} <!-- <a href="javascript:;" @click="phoneEditShow=true">验证/修改</a>--></span>
+							<div class="clearfix"></div>
+							<div class="edit_main" v-if="phoneEditShow">
+								<img class="edit_line" src="./public/img/edit_line@3x.png" width="350" />
+								<div class="clearfix"></div>
+								<div class="main_inner">
+									<input type="text" class="form-control" placeholder="" style="margin-bottom: 20px;">
+									<div style="margin-bottom: 20px;">
+										<input type="text" class="form-control code_input" placeholder="">
+										<button class="btn btn-primary code_btn">获取验证码</button>
+									</div>
+									<div>
+										<button class="btn btn-primary">确认</button>
+										<button class="btn btn-secondary" @click="phoneEditShow=false">取消</button>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label>联系人</label>
+							<input type="text" class="form-control" placeholder="" v-model="formSaveContact" />
+						</div>
+						<!-- <div class="form-group">
+          <label>QQ</label>
+          <input type="text" class="form-control" placeholder="" />
+        </div> -->
+						<div class="form-group">
+							<label>公司名称</label>
+							<input type="text" class="form-control" placeholder="" v-model="formSaveCompanyName" />
+						</div>
+						<div class="form-group">
+							<button class="btn btn-primary sub_btn" @click="setInfo">保存</button>
+							<span class="form_tips right" v-if="setInfoTips"><img :src="'./public/img/right@3x.png'" />OK</span>
+						</div>
+					</div>
+				</div>
+
+				<div v-if="tabIndex==2" class="tab3">
+					<div class="form">
+						<div class="form-group">
+							<label>旧密码</label>
+							<input type="password" class="form-control" placeholder="" v-model="formOldPwd">
+						</div>
+						<div class="form-group">
+							<label>新密码</label>
+							<input type="password" class="form-control" placeholder="" v-model="formNewPwd">
+						</div>
+						<div class="form-group">
+							<label>确认新密码</label>
+							<input type="password" class="form-control" placeholder="" v-model="formNewVpwd">
+						</div>
+						<div class="form-group">
+							<button class="btn btn-primary sub_btn" @click="changePwd">保存</button>
+							<span class="form_tips" v-bind:class="[changePwd_reg? 'right': 'wrong']" v-if="changePwdTips"><img :src="'./public/img/'+changePwdJudge+'@3x.png'" />{=changePwdMsg}</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+
+		<script src="./public/js/jquery.min.js"></script>
+		<script src="./public/js/vue.min.js"></script>
+		<script src="./public/js/tether.min.js"></script>
+		<script src="./public/js/bootstrap.min.js"></script>
+		<script src="./public/js/js.cookie.js"></script>
+		<script src="./public/js/common.js"></script>
+
+	</body>
+
+</html>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE web-app
+    PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+    "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+	<listener>
+		<listener-class>
+			com.longsheng.trader.listener.UserSiteContextListener
+		</listener-class>
+	</listener>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+	<servlet>
+		<servlet-name>CustomServlet</servlet-name>
+		<display-name>Custom Servlet</display-name>
+		<servlet-class>
+			com.longsheng.trader.service.servlet.Entry
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>CustomServlet</servlet-name>
+		<url-pattern>/service</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>PayServlet</servlet-name>
+		<display-name>Pay Servlet</display-name>
+		<servlet-class>
+			com.longsheng.trader.service.servlet.Pay
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>PayServlet</servlet-name>
+		<url-pattern>/pay</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>AlipayNotifyServlet</servlet-name>
+		<display-name>AlipayNotify Servlet</display-name>
+		<servlet-class>
+			com.longsheng.trader.service.servlet.AlipayNotify
+		</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>AlipayNotifyServlet</servlet-name>
+		<url-pattern>/alipaynotify</url-pattern>
+	</servlet-mapping>
+</web-app>

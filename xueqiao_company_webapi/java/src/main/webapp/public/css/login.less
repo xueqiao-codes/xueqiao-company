@@ -1,0 +1,171 @@
+html, body {
+  height: 100%;
+}
+
+.login_page, .reg_page {
+  background: url(/public/img/bg.jpg);
+  background-size: cover;
+  height: 100%;
+}
+
+.login_page {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  .inner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+
+    .inner_head {
+      margin-bottom: 100px;
+
+      span {
+        font-size: 60px;
+        color: #fff;
+        margin-left: 40px;
+        position: relative;
+        top: 15px;
+      }
+    }
+
+
+  }
+
+  .card {
+    border: none;
+    padding: 40px;
+    width: 380px;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+
+    h3 {
+      margin-bottom: 40px;
+    }
+
+    input {
+      padding: .88rem .75rem;
+      &[type = checkbox]{
+        width: auto;
+      }
+    }
+
+    .more {
+      a:nth-child(2) {
+        float: right;
+      }
+    }
+
+    .login_btn {
+      margin-top: 40px;
+      display: block;
+      width: 100%;
+    }
+
+    
+  }
+}
+
+
+.reg_page {
+  h2, h5 {
+    font-weight: normal;
+  }
+
+  h5 {
+    padding-left: 123px;
+    margin: 40px 0;
+  }
+
+  .card {
+    width: 1200px;
+    height: 100%;
+    margin: 0 auto;
+    border: none;
+    padding: 40px;
+    background-color: rgba(255, 255, 255, .75);
+    border-radius: 0;
+    overflow: auto;
+
+    .form {
+      width: 610px;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+
+      label {
+        width: 100px;
+        text-align: right;
+        margin-right: 20px;
+        font-size: 20px;
+        color: #424242;
+
+        span {
+          color: #ff0000;
+        }
+      }
+
+      input {
+        border: none;
+        width: 300px;
+        display: inline-block;
+
+        &[type='checkbox'] {
+          width: auto;
+        }
+      }
+
+
+
+      small {
+        padding-left: 123px;
+
+        &.read {
+          margin-bottom: 13px;
+          margin-left: 14px;
+        }
+      }
+
+      .form-group {
+        margin-bottom: 40px;
+      }
+
+      .get_code {
+        margin-left: 12px;
+      }
+
+      .sub_btn {
+        width: 300px;
+        margin-left: 120px;
+      }
+
+      .form_tips {
+        font-size: 12px;
+        margin-left: 10px;
+
+        img {
+          margin-right: 5px;
+        }
+
+        &.right {
+          color: #00dd58;
+        }
+
+        &.wrong {
+          color: #ff3c00;
+        }
+      }
+    }
+
+
+  }
+}
+
+#regCode {
+  width: 170px;
+}

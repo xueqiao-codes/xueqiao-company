@@ -1,0 +1,35 @@
+.page_nav_vue_nav-center {
+	width: 650px;
+	height: auto;
+	margin: 0 auto;
+	margin-top: 50px;
+	margin-bottom: 20px;
+}
+.page_nav_vue_page_info {
+	color: #808080;
+	font-size: 16px;
+	margin-right:50px;
+}
+.page_nav_vue_page_control_btn {
+	color: #369EEF;
+	font-size: 16px;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 3px;
+	border-color: #369EEF;
+	padding: 2px 10px;
+	background: white;
+}
+.page_nav_vue_input_conponent {
+	color: #303030;
+	font-size: 16px;
+	border-width: 1px;
+	border-style: solid;
+	border-radius: 3px;
+	border-color: #CCCCCC;
+	padding: 2px 10px;
+	background: white;
+	width: 68px;
+	height: 24px;
+	text-align: center;
+}

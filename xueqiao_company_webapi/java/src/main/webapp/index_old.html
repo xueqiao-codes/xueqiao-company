@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>雪橇金融交易系统</title>
+
+		<link href="public/css/bootstrap.min.css" rel="stylesheet">
+		<link href="public/img/logo60.png" rel="shortcut icon" />
+
+		<link href="public/css/navbar.css" rel="stylesheet">
+		<link href="public/css/sled_common.css" rel="stylesheet">
+		<link href="public/css/main_page.css" rel="stylesheet" />
+
+		<style>
+			body {
+				background: #fff url(public/img/bg.jpg) no-repeat left top;
+				/*background-size: cover;*/
+				position: relative;
+				border-radius: 0px;
+				margin: 0 auto;
+				max-width: 100wh;
+				max-height: 100vh;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div id="vue-app">
+			
+			<nav v-cloak class="navbar navbar-default fixed-top" role="navigation">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="#"><img src="public/img/logo60.png" width="30" height="30" style="display: inline;" /><span class="nav_title">雪橇金融交易系统</span></a>
+					</div>
+					<div>
+						<ul class="nav navbar-nav pull-right">
+							<li>
+								<a href="#" @click="gotoMainPage"><span class="nav_tab">首页</span></a>
+							</li>
+							<li>
+								<a href="#"><span class="nav_tab">产品</span></a>
+							</li>
+							<li class="dropdown" v-if="isLogin">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									<span class="nav_tab">{{getUserName()}}
+									<b class="caret"></b></span>
+								</a>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="#" @click="toggleLeftSideItem(0)"><span class="nav_drop_down_item">公司资料</span></a>
+									</li>
+									<li>
+										<a href="#" @click="toggleLeftSideItem(1)"><span class="nav_drop_down_item">交易托管服务</span></a>
+									</li>
+									<li>
+										<a href="#" @click="toggleLeftSideItem(2)"><span class="nav_drop_down_item">订单列表</span></a>
+									</li>
+								</ul>
+							</li>
+							<li v-else>
+									<a href="#" @click="showLoginDialog"><span class="nav_tab">登录 </span></a>
+								</li>
+							<li v-if="isLogin">
+								<a href="#" @click="logout"><span class="nav_tab">退出登录</span></a>
+							</li>
+							<li v-else>
+								<a href="#" @click="gotoSignupFragment"><span class="nav_tab">立即注册</span></a>
+							</li>
+								
+						</ul>
+					</div>
+				</div>
+			</nav>
+
+			<!-- Signup fragment -->
+			<div >
+				<div v-cloak class="float_fragment_container dialog_page margin_top_minus20" v-if="isSignupFragmentShow">
+				<div class="horizonal_center_fragment padding_top30">
+
+					<div style="height: 70px;"></div>
+
+					<h5>注册</h5>
+					<span class="signup_hint">已有账号？</span><a href="#" @click="showLoginDialog">立即登录</a>
+					<fieldset>
+						<label class="signup_key" for="field_file">邮箱</label>&nbsp;
+						<input class="signup_value" type="text" v-model="email">
+						<span></span>
+					</fieldset>
+					<fieldset>
+						<label class="signup_key" for="field_file">团队名称</label>&nbsp;
+						<input class="signup_value" type="text" v-model="companyCode">
+					</fieldset>
+					<fieldset>
+						<label class="signup_key" for="field_file">密码</label>&nbsp;
+						<input class="signup_value" type="text" v-model="password">
+					</fieldset>
+					<span class="signup_hint">6-20位字母和数字组合</span>
+					<fieldset>
+						<label class="signup_key" for="field_file">确认密码</label>&nbsp;
+						<input class="signup_value" type="text" v-model="companySignupPasswdDoubleCheck">
+					</fieldset>
+					<fieldset>
+						<label class="signup_key" for="field_file">公司名称</label>&nbsp;
+						<input class="signup_value" type="text" v-model="companyName">
+					</fieldset>
+					<fieldset>
+						<label class="signup_key" for="field_file">联系人</label>&nbsp;
+						<input class="signup_value" type="text" v-model="contact">
+						<span class="signup_info_error">{{telValidMsg}}</span>
+					</fieldset>
+					<fieldset>
+						<label class="signup_key" for="field_file">手机</label>&nbsp;
+						<input class="signup_value" type="text" v-model="telephone">
+						<span class="signup_info_error">{{telValidMsg}}</span>
+					</fieldset>
+					<fieldset>
+						<label class="signup_key" for="field_file">验证码</label>&nbsp;
+						<input class="signup_value" style="width: 130px;" type="text" v-model="companySignupVerifyCode">
+						<button style="width: 96px;" v-bind:disabled="vbtnDisabled" @click="getVerifyCode">{{getVerifyBtnText}}</button>
+					</fieldset>
+					<span class="signup_hint">收不到验证短信？联系客服</span>
+					
+					
+					<div>
+						<span class="signup_hint">我已经阅读并同意</span>
+					</div>
+					<div>
+						<a href="#"><span>《雪橇服务协议》</span></a>
+						<a href="#"><span>《隐私政策》</span></a>
+					</div>
+					<div>
+						<button class="signup_hint signup_value" @click="signup">注册</button>
+					</div>
+
+					<div style="height: 20px;"></div>
+
+				</div>
+
+			</div>
+
+			<!-- Login dialog -->
+			<div v-cloak class="transparent_dialog" v-if="isLoginDialogShow">
+				<div class="transparent_dialog_container">
+					<div align="right" style="padding-right: 10px; padding-bottom: 10px;">
+						<a href="#" @click="cancelLogin"><img src="public/img/dialog_cancel.png" /></a>
+					</div>
+					<div class="dialog_container">
+
+						<div align="center" style="margin-bottom: 20px;">
+							<span style="text-align: center;"><b>登录</b></span>
+						</div>
+						<div class="dialog_content">
+							<div>
+								<label class="login_key">账号</label>&nbsp;&nbsp;&nbsp;
+								<input class="signup_value" type="text" v-model="loginCompanyCode">
+							</div>
+							<div>
+								<label class="login_key">密码</label>&nbsp;&nbsp;&nbsp;
+								<input class="signup_value" type="text" v-model="loginPassword">
+							</div>
+						</div>
+
+						<div align="right" style="padding-top: 20px;">
+							<button class="signup_value" @click="login">立即登录</button>
+						</div>
+
+						<div class="signup_value" style="padding-top: 5px; display: flex;
+	justify-content: space-between; margin-left: 65px;">
+							<a href="#" style="text-decoration:none;" @click="gotoSignupFragment">注册</a>
+							<a href="#" style="text-decoration:none;" @click="gotoForgetPasswdPage">忘记密码</a>
+						</div>
+					</div>
+				</div>
+
+			</div>
+			
+			<!--<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+				<div class="container">
+					<a class="navbar-brand" href="#"><img src="public/img/logo60.png" width="30" height="30" style="display: inline;"/>雪橇金融交易系统</a>
+
+					<div class="nav nav-pills pull-right">
+						<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+          			<span class="navbar-toggler-icon"></span>
+        		</button>
+						<div class="collapse navbar-collapse" id="navbarsExample07">
+							<ul class="navbar-nav mr-auto">
+								<li class="nav-item">
+									<a class="nav-link" href="#" @click="gotoMainPage">首页 <span class="sr-only">(current)</span></a>
+								</li>
+
+								<li class="nav-item dropdown" v-if="isLogin">
+									<a class="nav-link dropdown-toggle" href="#" id="dropdown07" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">XUEQIAO</a>
+									<div class="dropdown-menu" aria-labelledby="dropdown07">
+										<a class="dropdown-item" href="#" @click="gotoUserCenterPage">我的资料</a>
+										<a class="dropdown-item" href="#" @click="gotoHostingServicePage">我的托管服务</a>
+										<a class="dropdown-item" href="#" @click="gotoOrderPage">我的订单</a>
+										<a class="dropdown-item" href="#" @click="gotoUserListPage">用户列表</a>
+									</div>
+								</li>
+								<li class="nav-item" v-else>
+									<a class="nav-link" href="#" @click="showLoginDialog">登录 </a>
+								</li>
+
+								<li class="nav-item" v-if="isLogin">
+									<a class="nav-link" href="#" @click="logout">退出登录</a>
+								</li>
+								<li class="nav-item" v-else>
+									<a class="nav-link" href="#" @click="gotoSignupFragment">立即注册</a>
+								</li>
+
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>-->
+
+			<!--<div v-cloak class="float_fragment_container dialog_page margin_top_minus20" v-if="isSignupFragmentShow">
+				<div class="horizonal_center_fragment padding_top30">
+
+					<div style="height: 70px;"></div>
+
+					<h5>注册</h5>
+					<span class="signup_hint">已有账号？立即登录</span>
+					<fieldset>
+						<label class="signup_key" for="field_file">邮箱</label>&nbsp;
+						<input class="signup_value" type="text" v-model="email">
+						<span></span>
+					</fieldset>
+					<fieldset>
+						<label class="signup_key" for="field_file">公司账号</label>&nbsp;
+						<input class="signup_value" type="text" v-model="companyCode">
+					</fieldset>
+					<fieldset>
+						<label class="signup_key" for="field_file">密码</label>&nbsp;
+						<input class="signup_value" type="text" v-model="password">
+					</fieldset>
+					<span class="signup_hint">6-20位字母和数字组合</span>
+					<fieldset>
+						<label class="signup_key" for="field_file">确认密码</label>&nbsp;
+						<input class="signup_value" type="text" v-model="companySignupPasswdDoubleCheck">
+					</fieldset>
+					<fieldset>
+						<label class="signup_key" for="field_file">联系人</label>&nbsp;
+						<input class="signup_value" type="text" v-model="contact">
+						<span class="signup_info_error">{{telValidMsg}}</span>
+					</fieldset>
+					<fieldset>
+						<label class="signup_key" for="field_file">手机</label>&nbsp;
+						<input class="signup_value" type="text" v-model="telephone">
+						<span class="signup_info_error">{{telValidMsg}}</span>
+					</fieldset>
+					<fieldset>
+						<label class="signup_key" for="field_file">验证码</label>&nbsp;
+						<input class="signup_value" style="width: 130px;" type="text" v-model="companySignupVerifyCode">
+						<button style="width: 96px;" v-bind:disabled="vbtnDisabled" @click="getVerifyCode">{{getVerifyBtnText}}</button>
+					</fieldset>
+					<span class="signup_hint">收不到验证短信？联系客服</span>
+					<fieldset>
+						<label class="signup_key" for="field_file">公司名称</label>&nbsp;
+						<input class="signup_value" type="text" v-model="companyName">
+					</fieldset>
+					<span class="signup_hint">我已经阅读并同意</span>
+					<div>
+						<button class="signup_hint signup_value" @click="signup">注册</button>
+					</div>
+
+					<div style="height: 20px;"></div>
+
+				</div>
+
+			</div>-->
+
+			<!-- Login dialog -->
+			<!--<div v-cloak class="transparent_dialog" v-if="isLoginDialogShow">
+				<div class="transparent_dialog_container">
+					<div align="right" style="padding-right: 10px; padding-bottom: 10px;">
+						<a href="#" @click="cancelLogin"><img src="public/img/dialog_cancel.png" /></a>
+					</div>
+					<div class="dialog_container">
+
+						<div align="center" style="margin-bottom: 20px;">
+							<span style="text-align: center;"><b>登录</b></span>
+						</div>
+						<div class="dialog_content">
+							<div>
+								<label class="login_key">账号</label>&nbsp;&nbsp;&nbsp;
+								<input class="signup_value" type="text" v-model="loginCompanyCode">
+							</div>
+							<div>
+								<label class="login_key">密码</label>&nbsp;&nbsp;&nbsp;
+								<input class="signup_value" type="text" v-model="loginPassword">
+							</div>
+						</div>
+
+						<div align="right" style="padding-top: 20px;">
+							<button class="signup_value" @click="login">立即登录</button>
+						</div>
+
+						<div class="signup_value" style="padding-top: 5px; display: flex;
+	justify-content: space-between; margin-left: 65px;">
+							<a href="#" style="text-decoration:none;" @click="gotoSignupFragment">注册</a>
+							<a href="#" style="text-decoration:none;" @click="gotoForgetPasswdPage">忘记密码</a>
+						</div>
+					</div>
+				</div>
+
+			</div>-->
+		</div>
+		<!-- Bootstrap core JavaScript
+    ================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="public/js/jquery.min.js"></script>
+		<script src="public/js/popper.min.js"></script>
+		<script src="public/js/bootstrap.min.js"></script>
+		<script src="public/js/tether.min.js"></script>
+		<script type="text/javascript" src="public/js/js.cookie.js"></script>
+		<script src="public/js/vue.min.js"></script>
+		<script src="public/js/common.js"></script>
+		<script src="public/js/index.js"></script>
+	</body>
+
+</html>

@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>雪橇金融交易系统</title>
+
+		<!-- Bootstrap core CSS -->
+		<link href="public/css/bootstrap.min.css" rel="stylesheet">
+		<link href="public/css/bootstrap-select.min.css" rel="stylesheet" />
+
+		<link href="public/css/sled_common.css" rel="stylesheet">
+		<link href="./public/img/logo60.png" rel="shortcut icon" />
+
+		<!-- Custom styles for this template -->
+		<link href="public/css/table.css" rel="stylesheet">
+		<link href="public/css/navbar.css" rel="stylesheet">
+
+		<style>
+			.container {
+				width: 1200px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<nav v-cloak class="navbar navbar-default fixed-top" role="navigation" id="navbar-app">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#"><img src="public/img/logo60.png" width="30" height="30" style="display: inline;" /><span class="nav_title">雪橇金融交易系统</span></a>
+				</div>
+				<div>
+					<ul class="nav navbar-nav pull-right">
+						<li>
+							<a href="#" @click="gotoMainPage"><span class="nav_tab">首页</span></a>
+						</li>
+						<li>
+							<a href="#"><span class="nav_tab">产品</span></a>
+						</li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								<span class="nav_tab">{{getUserName()}}
+									<b class="caret"></b></span>
+							</a>
+							<ul class="dropdown-menu">
+								<li>
+									<a href="#" @click="toggleLeftSideItem(0)"><span class="nav_drop_down_item">公司资料</span></a>
+								</li>
+								<li>
+									<a href="#" @click="toggleLeftSideItem(1)"><span class="nav_drop_down_item">交易托管服务</span></a>
+								</li>
+								<li>
+									<a href="#" @click="toggleLeftSideItem(2)"><span class="nav_drop_down_item">订单列表</span></a>
+								</li>
+							</ul>
+						</li>
+
+						<li>
+							<a href="#" @click="logout"><span class="nav_tab">退出登录</span></a>
+						</li>
+
+					</ul>
+				</div>
+			</div>
+		</nav>
+
+		<!--<div id="user-center-vue-app">-->
+
+		<div class="sled_main_container">
+
+			<!--<div class="container-fluid padding_top60">-->
+			<!--<div class="row"> -->
+			<nav class="col-md-2 left_side_bar" id="common-left-side-bar">
+				<div class="sidebar-sticky">
+					<ul class="flex-column">
+						<li class="">
+							<a class="" href="#" @click="toggleLeftSideItem(0)">
+								<span style="display:block; width: 140px;" class="left_side_item_active">公司资料</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" @click="toggleLeftSideItem(1)">
+								<span style="display:block; width: 140px;" class="left_side_item_normal">交易托管服务</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#" @click="toggleLeftSideItem(2)">
+								<span style="display:block; width: 140px;" class="left_side_item_normal">我的订单</span>
+							</a>
+						</li>
+					</ul>
+
+				</div>
+			</nav>
+
+			<div class="col-md-9 padding_top30" id="app-content">
+
+				<!--<h2>Section title</h2>-->
+				<div>
+					<div>
+						<label class="user_center_key">公司名称</label>&nbsp;&nbsp;&nbsp;
+						<span class="signup_value">{{companyName}}</span>&nbsp;&nbsp;&nbsp;
+						<a href="#" style="text-decoration:none;"><span>修改资料</span></a>
+						&nbsp;
+						<a href="#" style="text-decoration:none;"><span>修改密码</span></a>
+					</div>
+					<div>
+						<label class="user_center_key">账号</label>&nbsp;&nbsp;&nbsp;
+						<span class="signup_value">{{companyCode}}</span>
+					</div>
+					<div>
+						<label class="user_center_key">邮箱</label>&nbsp;&nbsp;&nbsp;
+						<span class="signup_value">{{email}}</span>
+					</div>
+					<div>
+						<label class="user_center_key">联系人</label>&nbsp;&nbsp;&nbsp;
+						<span class="signup_value">{{contact}}</span>
+					</div>
+					<div>
+						<label class="user_center_key">手机</label>&nbsp;&nbsp;&nbsp;
+						<span class="signup_value">{{telephone}}</span>
+					</div>
+				</div>
+			</div>
+			<!--</div>-->
+			<!--</div>-->
+			<div id="right-side-users-admin" class="col-md-3 right_side_bar ">
+				<div>
+					<div>
+						<span class="right_side_bar_title">公司成员</span>
+					</div>
+					<div style="padding-top: 10px; padding-bottom: 10px;">
+						<a href="#" @click="showAddCompanyUserDialog"><span class="right_side_bar_btn_text">添加成员</span></a>
+					</div>
+					<div v-cloak class="general_bg_default">
+						<div class="list_container">
+							<div class="right_side_bar_table" v-for="companyUser in companyUserPage">
+								<div>
+									<span style="width: 60px;" class="right_side_bar_table_text">{{companyUser.userName}}</span></div>
+								<div>
+									<span style="width: 120px;" class="right_side_bar_table_text">{{companyUser.cnName}}</span></div>
+								<div>
+									<a v-if="companyUser.status=='NORMAL'" href="#" @click="disableCompanyUser(companyUser)"><span style="width: 40px;" class="right_side_bar_table_text">停用</span></a>
+									<a v-else href="#" @click="enableCompanyUser(companyUser)"><span style="width: 40px;" class="right_side_bar_table_text">启用</span></a>
+									<!--<a href="#"><span style="width: 40px;" class="right_side_bar_table_text">停用</span></a>-->
+								</div>
+								<div>
+									<a class="right_side_bar_table_text" href="#" @click="showModifyCompanyUserDialog(companyUser)"><img src="public/img/icon_edit.png"></a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- Add company user dialog -->
+				<div v-cloak class="transparent_dialog" v-if="isAddUserDialogShow">
+				<!--<div v-cloak class="transparent_dialog">-->
+					<div class="transparent_dialog_container">
+						<div align="right" style="padding-right: 10px; padding-bottom: 10px;">
+							<a href="#" @click="cancelAddCompanyUser"><img src="public/img/dialog_cancel.png" /></a>
+						</div>
+						<div class="dialog_container">
+
+							<div style="margin-bottom: 20px;">
+								<span><b>添加新用户</b></span>
+							</div>
+							<div class="dialog_content">
+								<div class="input_frame_wrapper">
+									<label class="add_company_usr_key">用户名</label>&nbsp;&nbsp;&nbsp;
+									<input class="input_frame signup_value" type="text" v-model="newCompanyUser.userName">
+								</div>
+								<div class="input_frame_wrapper">
+									<label class="add_company_usr_key">密码</label>&nbsp;&nbsp;&nbsp;
+									<input class="input_frame signup_value" type="text" v-model="newCompanyUser.password">
+								</div>
+								<div class="input_frame_wrapper">
+									<label class="add_company_usr_key">手机</label>&nbsp;&nbsp;&nbsp;
+									<input class="input_frame signup_value" type="text" v-model="newCompanyUser.tel">
+								</div>
+								<div class="input_frame_wrapper">
+									<label class="add_company_usr_key">姓名</label>&nbsp;&nbsp;&nbsp;
+									<input class="input_frame signup_value" type="text" v-model="newCompanyUser.cnName">
+								</div>
+								<div class="input_frame_wrapper">
+									<label class="add_company_usr_key">交易托管服务</label>&nbsp;&nbsp;&nbsp;
+									<!--<select class="selectpicker" multiple data-width="230px" v-model="addCompanyUserSelectedGroups">-->
+									<select class="input_frame" style="width: 230px;" multiple v-model="newCompanyUser.groupUserList">
+										<option v-for="companyGroup in companyGroupPage" v-bind:value="companyGroup">{{companyGroup.groupName}}</option>
+									</select>
+								</div>
+								<div class="input_frame_wrapper" v-for="groupUser in newCompanyUser.groupUserList">
+									<label class="add_company_usr_sub_key_1">身份：</label>
+									<label class="add_company_usr_sub_key_2">{{groupUser.groupName}}</label>&nbsp;&nbsp;&nbsp;
+									<select class="input_frame add_company_usr_sub_value" v-model="groupUser.role">
+										<option value="TRADER">交易员</option>
+										<option value="ADMIN">管理员</option>
+										<option value="OBSERVER">观察员</option>
+									</select>
+								</div>
+							</div>
+							<div align="center" style="padding-top: 20px;">
+								<button class="sled_btn_enable signup_value" @click="addCompanyUser">完成添加</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Modify company user dialog -->
+				<div v-cloak class="transparent_dialog" v-if="isModifyUserDialogShow">
+				<!--<div class="transparent_dialog">-->
+					<div class="transparent_dialog_container">
+						<div align="right" style="padding-right: 10px; padding-bottom: 10px;">
+							<a href="#" @click="cancelModifyCompanyUser"><img src="public/img/dialog_cancel.png" /></a>
+						</div>
+						<div class="dialog_container">
+
+							<div style="margin-bottom: 20px;">
+								<span><b>编辑用户信息</b></span>
+							</div>
+							<div class="dialog_content">
+								<div class="input_frame_wrapper">
+									<label class="add_company_usr_key">用户名</label>&nbsp;&nbsp;&nbsp;
+									<input class="input_frame signup_value" type="text" v-model="modifiedCompanyUser.userName">
+								</div>
+								<div class="input_frame_wrapper">
+									<label class="add_company_usr_key">密码</label>&nbsp;&nbsp;&nbsp;
+									<input class="input_frame signup_value" type="text" v-model="modifiedCompanyUser.password">
+								</div>
+								<div class="input_frame_wrapper">
+									<label class="add_company_usr_key">手机</label>&nbsp;&nbsp;&nbsp;
+									<input class="input_frame signup_value" type="text" v-model="modifiedCompanyUser.tel">
+								</div>
+								<div class="input_frame_wrapper">
+									<label class="add_company_usr_key">姓名</label>&nbsp;&nbsp;&nbsp;
+									<input class="input_frame signup_value" type="text" v-model="modifiedCompanyUser.cnName">
+								</div>
+								<div class="input_frame_wrapper">
+									<label class="add_company_usr_key">交易托管服务</label>&nbsp;&nbsp;&nbsp;
+									<!--<select class="selectpicker" multiple data-width="230px" v-model="addCompanyUserSelectedGroups">-->
+									<select class="input_frame" style="width: 230px;" multiple v-model="modifiedCompanyGroupList" @change="onModifyGroupChanged(modifiedCompanyGroupList)">
+										<option v-for="companyGroup in companyGroupPage" v-bind:value="companyGroup">{{companyGroup.groupName}}</option>
+									</select>
+								</div>
+								<div class="input_frame_wrapper" v-for="groupUser in modifiedCompanyUser.groupUserList">
+									<label class="add_company_usr_sub_key_1">身份：</label>
+									<label class="add_company_usr_sub_key_2">{{groupUser.groupName}}</label>&nbsp;&nbsp;&nbsp;
+									<select class="input_frame add_company_usr_sub_value" v-model="groupUser.role">
+										<option value="TRADER">交易员</option>
+										<option value="ADMIN">管理员</option>
+										<option value="OBSERVER">观察员</option>
+									</select>
+								</div>
+							</div>
+							<div align="right" style="padding-top: 20px;">
+								<button class="sled_btn_enable signup_value" @click="modifyCompanyUser">完成编辑</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!--</div>-->
+
+		<!-- Bootstrap core JavaScript
+    ================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="public/js/jquery.min.js"></script>
+		<script src="public/js/popper.min.js"></script>
+		<script src="public/js/bootstrap.min.js"></script>
+		<script src="public/js/bootstrap-select.min.js"></script>
+		<script src="public/js/tether.min.js"></script>
+		<script src="public/js/vue.min.js"></script>
+		<script src="public/js/js.cookie.js"></script>
+		<script src="public/js/common.js"></script>
+		<script src="public/js/common_nav_bar.js"></script>
+		<script src="public/js/common_left_side_bar.js"></script>
+		<script src="public/js/common_right_side_users_admin.js"></script>
+		<script src="public/js/user_center.js"></script>
+	</body>
+
+</html>

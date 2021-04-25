@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>雪橇金融交易系统</title>
+
+		<!-- Bootstrap core CSS -->
+		<link href="public/css/bootstrap.min.css" rel="stylesheet">
+		<link href="public/css/sled_common.css" rel="stylesheet">
+		<link href="./public/img/logo60.png" rel="shortcut icon" />
+
+		<!-- Custom styles for this template -->
+		<link href="public/css/navbar.css" rel="stylesheet">
+		<link href="public/css/page_nav.css" rel="stylesheet">
+		<link href="public/css/table.css" rel="stylesheet">
+
+		<style>
+			.container {
+				width: 1200px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div id="user-center-vue-app">
+			<!--<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+				<div class="container">
+					<a class="navbar-brand" href="#"><img src="public/img/logo60.png" width="30" height="30" />雪橇金融交易系统</a>
+
+					<div class="nav nav-pills pull-right">
+						<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+          			<span class="navbar-toggler-icon"></span>
+        		</button>
+						<div class="collapse navbar-collapse" id="navbarsExample07">
+							<ul class="navbar-nav mr-auto">
+								<li class="nav-item">
+									<a class="nav-link" href="#" @click="gotoMainPage">首页 <span class="sr-only">(current)</span></a>
+								</li>
+
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="#" id="dropdown07" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">XUEQIAO</a>
+									<div class="dropdown-menu" aria-labelledby="dropdown07">
+										<a class="dropdown-item" href="#" @click="gotoUserCenterPage">我的资料</a>
+										<a class="dropdown-item" href="#" @click="gotoHostingServicePage">我的托管服务</a>
+										<a class="dropdown-item" href="#" @click="gotoOrderPage">我的订单</a>
+										<a class="dropdown-item" href="#" @click="gotoUserListPage">用户列表</a>
+									</div>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#" @click="logout">退出登录</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>-->
+
+			<div class="main_container">
+				<div class="container-fluid padding_top60">
+					<div class="row">
+						<!--<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+							<div class="sidebar-sticky">
+								<ul class="nav flex-column">
+									<li class="nav-item">
+										<a class="nav-link active" href="#" @click="gotoUserCenterPage">
+											<span style="display:block; width: 100px;">我的资料</span>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#" @click="gotoUserListPage">
+											<span style="display:block; width: 100px;">用户列表</span>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#" @click="gotoHostingServicePage">
+											<span style="display:block; width: 100px;">交易托管服务</span>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#" @click="gotoOrderPage">
+											<span style="display:block; width: 100px;">我的订单</span>
+										</a>
+									</li>
+								</ul>
+
+							</div>
+						</nav>-->
+
+						<main v-cloak role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 padding_top30">
+
+							<!--<h4><b>用户列表:</b></h4>-->
+
+							<div class="content_title_bar">
+								<div class=" vertical_center">
+									<span><b>我的订单:</b></span>
+								</div>
+							</div>
+
+							<!-- table -->
+							<div class="general_bg_default">
+								<div class="list_container">
+									<table data-toggle="table" class="table table-bordered" style="border: 1px;">
+										<tr bgColor=#F8FCFF>
+											<th width="50">订单号</th>
+											<th width="50">产品</th>
+											<th width="50">类型</th>
+											<th width="100">创建时间</th>
+											<th width="100">支付/开通时间</th>
+											<th width="50">状态</th>
+											<th width="50">应收金额</th>
+											<th width="50">编辑</th>
+										</tr>
+										</thead>
+										<tbody>
+											<tr v-for="order in orderPage">
+												<td>{{order.orderId}}</td>
+												<td>{{order.productName}}</td>
+												<td>{{order.productName}}</td>
+												<td>{{order.createDay}}</br>{{order.createTime}}</td>
+												<td>{{order.lastModifyDay}}</br>{{order.lastModifyTime}}</td>
+												<td>{{order.statusCn}}</td>
+												<td>{{order.totalAmount}}</td>
+												<td><a href="#" v-if="isShowPayOrderButton(order.status)" @click="payOrder(order)">立即支付</a>&nbsp;<a href="#" @click="showOrderDetail(order)">详情</a></td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+							<!-- page navigation -->
+							<div class="page_nav page_nav_vue_nav-center">
+								<label class="page_nav_vue_page_info">第{{currentPage}}页/共{{totalPage}}页&nbsp;&nbsp;共{{totalNum}}条</label>
+								<button class="page_nav_vue_page_control_btn" v-on:click="gotoFirstPage">首页</button>&nbsp;
+								<button class="page_nav_vue_page_control_btn" v-on:click="gotoPreviousPage">上一页</button>&nbsp;
+								<input id="requestPage" class="page_nav_vue_input_conponent" type="text" name="requestPage" v-model="currentPage">&nbsp;
+								<button class="page_nav_vue_page_control_btn" v-on:click="gotoGivenPage">跳转</button>&nbsp;
+								<button class="page_nav_vue_page_control_btn" v-on:click="gotoNextPage">下一页</button>&nbsp;
+								<button class="page_nav_vue_page_control_btn" v-on:click="gotoLastPage">尾页</button>
+							</div>
+						</main>
+					</div>
+				</div>
+			</div>
+			
+			<div id="pay_order_qrcode " class="transparent_dialog" v-if="showPayOrderQRCode">
+				<div v-html="payOrderQRCodeHtml"></div>
+			</div>
+			
+			
+		</div>
+
+		<!-- Bootstrap core JavaScript
+    ================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="public/js/jquery.min.js"></script>
+		<script src="public/js/popper.min.js"></script>
+		<script src="public/js/bootstrap.min.js"></script>
+		<script src="public/js/tether.min.js"></script>
+		<script src="public/js/vue.min.js"></script>
+		<script src="public/js/js.cookie.js"></script>
+		<script src="public/js/common.js"></script>
+		<script src="public/js/order.js"></script>
+	</body>
+
+</html>

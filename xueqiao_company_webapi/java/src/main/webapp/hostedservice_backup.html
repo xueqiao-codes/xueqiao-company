@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>雪橇金融交易系统</title>
+
+		<!-- Bootstrap core CSS -->
+		<link href="public/css/bootstrap.min.css" rel="stylesheet">
+		<link href="public/css/sled_common.css" rel="stylesheet">
+		<link href="./public/img/logo60.png" rel="shortcut icon" />
+
+		<!-- Custom styles for this template -->
+		<link href="public/css/navbar.css" rel="stylesheet">
+		<link href="public/css/page_nav.css" rel="stylesheet">
+		<link href="public/css/table.css" rel="stylesheet">
+		<link href="public/css/hosted_service.css" rel="stylesheet">
+
+		<style>
+			.container {
+				width: 1200px;
+			}
+			
+			#item_inactive {
+				margin: 2px;
+				width: 80px;
+				height: 25px;
+				border-style: solid;
+				border-width: 1px;
+				border-radius: 3px;
+				border-color: #BBBBBB;
+				text-align: center;
+				color: #BBBBBB;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div id="hostedservice-vue-app">
+			<!--<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+				<div class="container">
+					<a class="navbar-brand" href="#"><img src="public/img/logo60.png" width="30" height="30" />雪橇金融交易系统</a>
+
+					<div class="nav nav-pills pull-right">
+						<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExample07" aria-controls="navbarsExample07" aria-expanded="false" aria-label="Toggle navigation">
+          			<span class="navbar-toggler-icon"></span>
+        		</button>
+						<div class="collapse navbar-collapse" id="navbarsExample07">
+							<ul class="navbar-nav mr-auto">
+								<li class="nav-item">
+									<a class="nav-link" href="#" @click="gotoMainPage">首页 <span class="sr-only">(current)</span></a>
+								</li>
+
+								<li class="nav-item dropdown">
+									<a class="nav-link dropdown-toggle" href="#" id="dropdown07" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">XUEQIAO</a>
+									<div class="dropdown-menu" aria-labelledby="dropdown07">
+										<a class="dropdown-item" href="#" @click="gotoUserCenterPage">我的资料</a>
+										<a class="dropdown-item" href="#" @click="gotoHostingServicePage">我的托管服务</a>
+										<a class="dropdown-item" href="#" @click="gotoOrderPage">我的订单</a>
+										<a class="dropdown-item" href="#" @click="gotoUserListPage">用户列表</a>
+									</div>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#" @click="logout">退出登录</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</nav>-->
+
+			<div v-cloak class="main_container">
+				<div class="container-fluid padding_top60">
+					<div class="row">
+						<!--<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+							<div class="sidebar-sticky">
+								<ul class="nav flex-column">
+									<li class="nav-item">
+										<a class="nav-link active" href="#" @click="gotoUserCenterPage">
+											<span style="display:block; width: 100px;">我的资料</span>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#" @click="gotoUserListPage">
+											<span style="display:block; width: 100px;">用户列表</span>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#" @click="gotoHostingServicePage">
+											<span style="display:block; width: 100px;">交易托管服务</span>
+										</a>
+									</li>
+									<li class="nav-item">
+										<a class="nav-link" href="#" @click="gotoOrderPage">
+											<span style="display:block; width: 100px;">我的订单</span>
+										</a>
+									</li>
+								</ul>
+
+							</div>
+						</nav>-->
+
+						<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4 padding_top30">
+
+							<!--<h4><b>用户列表:</b></h4>-->
+
+							<div class="content_title_bar">
+								<div class=" vertical_center">
+									<span><b>我的交易托管服务:</b></span>
+
+									<div class="sled_align_rifht">
+										<button id="btn-add-exchange" class="sled_btn_enable" @click="showAddHostedServiceDialog">新建交易托管服务</button>
+										<button id="btn-add-exchange" class="sled_btn_enable" @click="gotoOrderPage">查看订单</button>
+									</div>
+								</div>
+							</div>
+
+							<!-- table -->
+							<div class="general_bg_default">
+								<div class="list_container">
+									<table data-toggle="table" class="table table-bordered" style="border: 1px;">
+										<thead>
+											<tr bgColor=#F8FCFF>
+												<th width="50">服务ID</th>
+												<th width="50">名称</th>
+												<th width="100">交易类型</th>
+												<th width="100">规格</th>
+												<th width="80">托管服务状态</th>
+												<th width="100">到期日</th>
+												<th width="50">操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr v-for="hostedService in hostedServicePage">
+												<td>{{hostedService.groupId}}</td>
+												<td>{{hostedService.groupName}}</td>
+												<td>{{hostedService.serviceType}}</td>
+												<td>{{hostedService.specName}}</td>
+												<td>{{hostedService.hostingServiceStatus}}</td>
+												<td>{{hostedService.expiredTimestamp}}</td>
+												<td>
+													<a href="#" @click="showHostedServiceManagerDailog(hostedService)">管理</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+
+							<!-- page navigation -->
+							<div class="page_nav page_nav_vue_nav-center">
+								<label class="page_nav_vue_page_info">第{{currentPage}}页/共{{totalPage}}页&nbsp;&nbsp;共{{totalNum}}条</label>
+								<button class="page_nav_vue_page_control_btn" v-on:click="gotoFirstPage">首页</button>&nbsp;
+								<button class="page_nav_vue_page_control_btn" v-on:click="gotoPreviousPage">上一页</button>&nbsp;
+								<input id="requestPage" class="page_nav_vue_input_conponent" type="text" name="requestPage" v-model="currentPage">&nbsp;
+								<button class="page_nav_vue_page_control_btn" v-on:click="gotoGivenPage">跳转</button>&nbsp;
+								<button class="page_nav_vue_page_control_btn" v-on:click="gotoNextPage">下一页</button>&nbsp;
+								<button class="page_nav_vue_page_control_btn" v-on:click="gotoLastPage">尾页</button>
+							</div>
+						</main>
+					</div>
+				</div>
+			</div>
+
+			<!-- Add hosted service dialog -->
+			<div v-cloak class="transparent_dialog" v-if="isAddHostedServiceDialogShow">
+				<div class="transparent_dialog_container">
+					<div align="right" style="padding-right: 10px; padding-bottom: 10px;">
+						<a href="#" @click="cancelAddHostedService"><img src="public/img/dialog_cancel.png" /></a>
+					</div>
+					<div class="dialog_container">
+
+						<div align="center" style="margin-bottom: 20px;">
+							<span style="text-align: center;"><b>新建托管服务</b></span>
+						</div>
+						<div class="dialog_content gerneral_margin_10px">
+							<div class="gerneral_margin_10px">
+								<label class="hosted_service_key">设置服务名称：</label>&nbsp;&nbsp;&nbsp;
+								<input class="signup_value" type="text" v-model="newHostedService.hostedServiceName">
+							</div>
+							<div class="gerneral_margin_10px">
+								<label class="hosted_service_key">托管服务代码：</label>&nbsp;&nbsp;&nbsp;
+								<input class="signup_value" type="text" v-model="newHostedService.companyGroupCode">
+							</div>
+							<div class="flex_line gerneral_margin_10px">
+								<label class="hosted_service_key">交易类型：</label>&nbsp;&nbsp;&nbsp;
+								<div class="signup_value flex_vertical">
+									<a href="#" @click="typeTabToggle(0)" :class="toggleCss(0==newHostedService.typeTabIndex)" style="text-decoration:none;"><span>实盘</span></a>
+									<a href="#" @click="typeTabToggle(1)" :class="toggleCss(1==newHostedService.typeTabIndex)" style="text-decoration:none;"><span>模拟盘</span></a>
+								</div>
+							</div>
+							<div class="flex_line gerneral_margin_10px">
+								<label class="hosted_service_key">服务规格：</label>&nbsp;&nbsp;&nbsp;
+								<div class="hosted_service_value flex_vertical">
+
+									<div v-for="(hostedServiceProduct, index) in hostedServiceProductList">
+										<div class="flex_line">
+											<a href="#" @click="specTabToggle(index)" :class="toggleCss(index==newHostedService.specTabIndex)" style="text-decoration:none;"><span>{{hostedServiceProduct.name}}</span></a> <span class="general_margin_left" style="width: 390px;">{{hostedServiceProduct.description}}</span>
+										</div>
+									</div>
+
+								</div>
+							</div>
+							<div class="gerneral_margin_10px">
+								<label class="hosted_service_key">服务时长：</label>&nbsp;&nbsp;&nbsp;
+								<select class="input_conponent signup_value" v-model="selectedProductDetail">
+									<option v-for="(item, index) in selectedProductDetailList" v-bind:value="item">
+										{{item.timeIncrement}}天
+									</option>
+								</select>
+							</div>
+
+						</div>
+
+						<div class="general_margin_top">
+							<span><b>配置费用：</b></span> <span style="color: green;"><b>{{selectedProductDetail.price}}</b></span>
+						</div>
+
+						<div align="center" style="padding-top: 20px;">
+							<button class="sled_btn_enable signup_value" @click="addHostedService">提交订单</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Manage hosted service dialog -->
+			<div v-cloak class="transparent_dialog" v-if="isManageHostedServiceDialogShow">
+				<div class="transparent_dialog_container">
+					<div align="right" style="padding-right: 10px; padding-bottom: 10px;">
+						<a href="#" @click="cancelManageHostedService"><img src="public/img/dialog_cancel.png" /></a>
+					</div>
+					<div class="dialog_container" style="width: 888px;">
+
+						<div style="margin-bottom: 20px;">
+							<span class="dialog_title_font"><b>{{selectedHostedServiace.groupName}}(ID:{{selectedHostedServiace.groupId}})</b></span>
+						</div>
+
+						<div class="flex_space_between">
+
+							<div>
+								<span class="hint_font">交易环境:</span>
+								<span class="hint_font">{{selectedHostedServiace.serviceType}}</span>
+							</div>
+							<div>
+								<span class="hint_font">规格:</span>
+								<span class="hint_font">{{selectedHostedServiace.specName}}</span>
+
+								<a href="#" @click="showUpdateSpecDialog"><span class="link_hint_font">变更规格</span></a>
+							</div>
+							<div>
+								<span class="hint_font">到期时间:</span>
+								<span class="hint_font">{{selectedHostedServiace.expiredTimestamp}}</span>
+
+								<a href="#" @click="showRechargeDialog"><span class="link_hint_font">续费</span></a>
+							</div>
+
+						</div>
+
+						<div class="general_margin_top">
+							<span>配置托管服务用户组</span>
+							<a href="#" @click="showManageGroupUserDialog()"><span>管理用户组</span></a>
+						</div>
+						<div class="dialog_content">
+							<div class="general_bg_default">
+								<div class="list_container">
+									<table data-toggle="table" class="table table-bordered" style="border: 1px;">
+										<thead>
+											<tr bgColor=#F8FCFF>
+												<th width="50">用户名称</th>
+												<th width="100">姓名</th>
+												<th width="100">手机</th>
+												<th width="80">身份</th>
+												<th width="50">操作</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr v-for="groupUser in selectedHostedServiceGroupUserPage">
+												<td>{{groupUser.userName}}</td>
+												<td>{{groupUser.cnName}}</td>
+												<td>{{groupUser.tel}}</td>
+												<td>{{groupUser.cnRole}}</td>
+												<td>
+													<a href="#" @click="showSetGroupUserRoleDialog(groupUser)">设置身份</a>
+												</td>
+											</tr>
+										</tbody>
+									</table>
+									<!--<div v-if="">
+										<span>empty</span>
+									</div>-->
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Manage group user dialog -->
+			<div v-cloak class="transparent_dialog" v-if="isManageGroupUserDialogShow">
+				<div class="transparent_dialog_container">
+					<div align="right" style="padding-right: 10px; padding-bottom: 10px;">
+						<a href="#" @click="cancelManageGroupUser"><img src="public/img/dialog_cancel.png" /></a>
+					</div>
+					<div class="dialog_container" style="width: 888px;">
+
+						<div style="margin-bottom: 20px;">
+							<span class="dialog_title_font"><b>管理用户组</b></span>
+						</div>
+
+						<div class="dialog_content">
+							<div class="general_bg_default">
+								<div class="list_container">
+									<table data-toggle="table" class="table table-bordered" style="border: 1px;">
+										<thead>
+											<tr bgColor=#F8FCFF>
+												<th width="10"></th>
+												<th width="100">用户名称</th>
+												<th width="100">姓名</th>
+												<th width="100">手机</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr v-for="companyUser in companyUserPage">
+												<td><input type="checkbox" v-bind:value="companyUser.userId" v-model="selectedHostedServiceGroupUserIdList"></td>
+												<td>{{companyUser.userName}}</td>
+												<td>{{companyUser.cnName}}</td>
+												<td>{{companyUser.tel}}</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div align="center" style="padding-top: 20px;">
+								<button class="sled_btn_enable signup_value" @click="confirmManageGroupUser">确定</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Set group user role dialog -->
+			<div v-cloak class="transparent_dialog" v-if="isSetGroupUserRoleDialogShow">
+				<div class="transparent_dialog_container">
+					<div align="right" style="padding-right: 10px; padding-bottom: 10px;">
+						<a href="#" @click="cancelSetGroupUserRole"><img src="public/img/dialog_cancel.png" /></a>
+					</div>
+					<div class="dialog_container">
+
+						<div style="margin-bottom: 20px;">
+							<span class="dialog_title_font"><b>设置身份</b></span>
+						</div>
+
+						<div class="dialog_content">
+
+							<div class="dialog_content gerneral_margin_10px">
+								<div class="gerneral_margin_10px">
+									<label class="role_settings_key">用户名：</label>&nbsp;&nbsp;&nbsp;
+									<span class="signup_value">{{modifyGroupUser.userName}}</span>
+								</div>
+								<div class="gerneral_margin_10px">
+									<label class="role_settings_key">身份：</label>&nbsp;&nbsp;&nbsp;
+									<select class="input_conponent signup_value" v-model="modifyGroupUser.role">
+										<option value="TRADER">交易员</option>
+										<option value="ADMIN">管理员</option>
+										<option value="OBSERVER">观察员</option>
+									</select>
+								</div>
+							</div>
+
+							<div align="center" style="padding-top: 20px;">
+								<button class="sled_btn_enable signup_value" @click="modifyGroupUserRole">确定</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<!-- Update spec dialog -->
+			<div v-cloak class="transparent_dialog" v-if="isUpdateSpecDialogShow">
+				<div class="transparent_dialog_container">
+					<div align="right" style="padding-right: 10px; padding-bottom: 10px;">
+						<a href="#" @click="cancelUpdateSpec"><img src="public/img/dialog_cancel.png" /></a>
+					</div>
+					<div class="dialog_container">
+
+						<div style="margin-bottom: 20px;">
+							<span><b>变量规格</b></span>
+						</div>
+						<div class="dialog_content gerneral_margin_10px">
+							<div class="gerneral_margin_10px">
+								<label class="hosted_service_key">托管服务名称：</label>&nbsp;&nbsp;&nbsp;
+								<span>{{selectedHostedServiace.groupName}}(ID:{{selectedHostedServiace.groupId}})</span>
+							</div>
+							<div class="flex_line gerneral_margin_10px">
+								<label class="hosted_service_key">当前规格：</label>&nbsp;&nbsp;&nbsp;
+								<div class="flex_line">
+									<span class="item_active">{{selectedHostedServiace.specName}}</span>
+									<span class="general_margin_left" style="width: 390px;"></span>
+								</div>
+							</div>
+							<div class="flex_line gerneral_margin_10px">
+								<label class="hosted_service_key">选择规格：</label>&nbsp;&nbsp;&nbsp;
+								<div class="hosted_service_value flex_vertical">
+
+									<div v-for="(hostedServiceProduct, index) in hostedServiceProductList">
+										<div class="flex_line">
+											<a href="#" @click="specTabToggle(index)" :class="toggleCss(index==newHostedService.specTabIndex)" style="text-decoration:none;"><span>{{hostedServiceProduct.name}}</span></a> <span class="general_margin_left" style="width: 390px;">{{hostedServiceProduct.description}}</span>
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+						</div>
+
+						<div class="general_margin_top">
+							<span><b>变更费用：</b></span> <span style="color: green;"><b>{{selectedProductDetail.price}}</b></span>
+						</div>
+
+						<div align="center" style="padding-top: 20px;">
+							<button class="sled_btn_enable signup_value" @click="addUpdateSpecOrder">提交订单</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Recharge dialog -->
+			<div v-cloak class="transparent_dialog" v-if="isRechargeDialogShow">
+				<div class="transparent_dialog_container">
+					<div align="right" style="padding-right: 10px; padding-bottom: 10px;">
+						<a href="#" @click="cancelRecharge"><img src="public/img/dialog_cancel.png" /></a>
+					</div>
+					<div class="dialog_container">
+
+						<div align="center" style="margin-bottom: 20px;">
+							<span style="text-align: center;"><b>续费</b></span>
+						</div>
+						<div class="dialog_content gerneral_margin_10px">
+							<div class="gerneral_margin_10px">
+								<label class="hosted_service_key">托管服务名称：</label>&nbsp;&nbsp;&nbsp;
+								<span>{{selectedHostedServiace.groupName}}(ID:{{selectedHostedServiace.groupId}})</span>
+							</div>
+							<div class="gerneral_margin_10px">
+								<label class="hosted_service_key">到期时间：</label>&nbsp;&nbsp;&nbsp;
+								<span>{{selectedHostedServiace.expiredTimestamp}}</span>
+							</div>
+							<div class="gerneral_margin_10px">
+								<label class="hosted_service_key">服务时长：</label>&nbsp;&nbsp;&nbsp;
+								<select class="input_conponent signup_value" v-model="selectedProductDetail">
+									<option v-for="(item, index) in selectedProductDetailList" v-bind:value="item">
+										{{item.timeIncrement}}天
+									</option>
+								</select>
+							</div>
+
+						</div>
+
+						<div class="general_margin_top">
+							<span><b>续期费用：</b></span> <span style="color: green;"><b>{{selectedProductDetail.price}}</b></span>
+						</div>
+
+						<div align="center" style="padding-top: 20px;">
+							<button class="sled_btn_enable signup_value" @click="addRechargeOrder">提交订单</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<!-- Bootstrap core JavaScript
+    ================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<script src="public/js/jquery.min.js"></script>
+		<script src="public/js/popper.min.js"></script>
+		<script src="public/js/bootstrap.min.js"></script>
+		<script src="public/js/tether.min.js"></script>
+		<script src="public/js/vue.min.js"></script>
+		<script src="public/js/js.cookie.js"></script>
+		<script src="public/js/common.js"></script>
+		<script src="public/js/hostedservice.js"></script>
+	</body>
+
+</html>

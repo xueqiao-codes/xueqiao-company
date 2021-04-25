@@ -1,0 +1,58 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>雪橇交易系统</title>
+    <link href="./public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./public/css/common.css" rel="stylesheet">
+    <link href="./public/img/logo60.png" rel="shortcut icon" />
+        <link href="./public/css/login.css" rel="stylesheet">
+
+</head>
+<body>
+    <div class="reg_page" id="forgot_page">
+  <div class="card">
+    <h3 class="card-title">重置密码</h3>
+    <div class="form">
+      <div class="form-group">
+        <label for="regPhone"><span>*</span>手机</label>
+        <input type="text" class="form-control" id="regPhone" placeholder="" v-model="forgot_tel">
+      </div>
+      <div class="form-group">
+        <label for="regCode"><span>*</span>验证码</label>
+        <input type="text" class="form-control" id="regCode" placeholder="" v-model="forgot_verifyCode">
+        <a href="javascript:;" class="btn btn-primary get_code" @click="getForgotTelVerifyCode" v-bind:disabled="forgotVbtnDisabled">获取验证码&nbsp;{=time}</a>
+        <span class="form_tips right" v-if="getForgotVerifyMsg"><img :src="'./public/img/right@3x.png'" />验证码已发送</span>
+        <small class="form-text text-muted">收不到验证码？<a href="javascript:;">联系客服</a></small>
+      </div>
+      <div class="form-group">
+        <label for="regPwd"><span>*</span>密码</label>
+        <input type="password" class="form-control" id="regPwd" placeholder="" v-model="forgot_pwd" @blur="cheakForgotPwd">
+        <span class="form_tips" v-bind:class="[forgot_pwd_reg? 'right': 'wrong']" v-if="forgot_pwdValid===true"><img :src="'./public/img/'+forgot_validImgPwd+'@3x.png'" />{=forgot_pwdValidMsg}</span>
+        <small class="form-text text-muted">6-20位字母和数字组合</small>
+      </div>
+      <div class="form-group">
+        <label for="regConPwd"><span>*</span>确认密码</label>
+        <input type="password" class="form-control" id="regConPwd" placeholder="" v-model="forgot_vpwd" @blur="verifyForgotPwd">
+        <span class="form_tips" v-bind:class="[forgot_vpwd_reg? 'right': 'wrong']" v-if="forgot_vpwdValid===true"><img :src="'./public/img/'+forgot_validImgVpwd+'@3x.png'" />{=forgot_vpwdValidMsg}</span>
+      </div>
+      <div style="">
+        <button class="btn btn-primary sub_btn" @click="resetPassword">确认重置</button>
+        <span class="form_tips" v-bind:class="[resetPwd_reg? 'right': 'wrong']" v-if="resetPwdTips"><img :src="'./public/img/'+forgot_validImgResetPwd+'@3x.png'" />{=resetPwdMsg}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+    <script src="./public/js/jquery.min.js"></script>
+    <script src="./public/js/vue.min.js"></script>
+    <script src="./public/js/tether.min.js"></script>
+    <script src="./public/js/bootstrap.min.js"></script>
+    <script src="./public/js/js.cookie.js"></script>
+    <script src="./public/js/common.js"></script>
+
+</body>
+</html>

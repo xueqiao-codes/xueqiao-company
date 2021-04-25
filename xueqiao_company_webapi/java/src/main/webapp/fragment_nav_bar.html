@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<title>雪橇金融交易系统</title>
+
+		<!-- Bootstrap core CSS -->
+		<link href="public/css/bootstrap.min.css" rel="stylesheet">
+		<link href="public/css/sled_common.css" rel="stylesheet">
+		<link href="public/img/logo60.png" rel="shortcut icon" />
+		<link href="public/css/navbar.css" rel="stylesheet">
+		<link href="public/css/main_page.css" rel="stylesheet" />
+	</head>
+
+	<body>
+
+		<div id="navbar-app">
+
+			<nav v-cloak class="navbar navbar-default fixed-top" role="navigation">
+				<div class="container-fluid">
+					<div class="navbar-header">
+						<a class="navbar-brand" href="#"><img src="public/img/logo60.png" width="30" height="30" style="display: inline;" /><span class="nav_title">雪橇金融交易系统</span></a>
+					</div>
+					<div>
+						<ul class="nav navbar-nav pull-right">
+							<li>
+								<a href="#" @click="gotoMainPage"><span class="nav_tab">首页</span></a>
+							</li>
+							<li>
+								<a href="#"><span class="nav_tab">产品</span></a>
+							</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+									<span class="nav_tab">{{getUserName()}}
+									<b class="caret"></b></span>
+								</a>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="#" @click="toggleLeftSideItem(0)"><span class="nav_drop_down_item">公司资料</span></a>
+									</li>
+									<li>
+										<a href="#" @click="toggleLeftSideItem(1)"><span class="nav_drop_down_item">交易托管服务</span></a>
+									</li>
+									<li>
+										<a href="#" @click="toggleLeftSideItem(2)"><span class="nav_drop_down_item">订单列表</span></a>
+									</li>
+								</ul>
+							</li>
+
+							<li>
+								<a href="#" @click="logout"><span class="nav_tab">退出登录</span></a>
+							</li>
+
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</div>
+	</body>
+	<script src="public/js/jquery.min.js"></script>
+	<script src="public/js/popper.min.js"></script>
+	<script src="public/js/bootstrap.min.js"></script>
+	<script src="public/js/tether.min.js"></script>
+	<script src="public/js/vue.min.js"></script>
+	<script src="public/js/js.cookie.js"></script>
+	<script src="public/js/common.js"></script>
+	<script>
+		var app = new Vue({
+			el: '#navbar-app',
+			data: {
+				leftSideIndex: 0,
+			},
+			mounted: function() {
+				//		this.queryCompanyInfo();
+			},
+			methods: {
+				toggleLeftSideItem: function(index) {
+					gotoGivenPage(index);
+				},
+				getUserName: function() {
+					return getUserName();
+				},
+				logout: function() {
+					var that = this;
+					getMsg(
+						'Logout', {},
+						function(json) {
+							clearCookies();
+							that.isLogin = false;
+						}
+					)
+				},
+			}
+		})
+	</script>
+
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <link rel="icon" href="<%= BASE_URL %>logo.png" />
+    <title>雪橇金融交易系统</title>
+    <style>
+      body {
+        margin: 0;
+      }
+      .block_area {
+        width: 600px;
+        height: 200px;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        background-color: aliceblue;
+        margin: auto;
+        margin-top: 50px;
+        padding-top: 60px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+      .hint_text {
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>
+      <strong
+        >We're sorry but xueqiao_company_webapp doesn't work properly without
+        JavaScript enabled. Please enable it to continue.</strong
+      >
+    </noscript>
+    <div id="block_area" class="block_area" style="display: none;">
+      <span class="hint_text">不支持IE9及以下版本，请更新到IE10或以上版本，或者使用Chrome浏览器</span>
+    </div>
+
+    <div id="app"></div>
+
+    <!-- built files will be auto injected -->
+    <script type="text/javascript" src="common/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="common/jsencrypt.min.js"></script>
+
+    <script>
+      $(document).ready(function() {
+        var blockArea = document.getElementById("block_area");
+        var app = document.getElementById("app");
+        blockArea.style.display = "none"
+        var ieVersion = queryIEVersion()
+        if (ieVersion != -1 && ieVersion < 10) {
+          blockArea.style.display = "block"
+          app.style.display = "none"
+        } else {
+          blockArea.style.display = "none"
+          app.style.display = "block"
+        }
+      })
+
+      function queryIEVersion() {
+        var userAgent = navigator.userAgent //取得浏览器的userAgent字符串
+        var isIE =
+          userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 //判断是否IE<11浏览器
+        var isEdge = userAgent.indexOf("Edge") > -1 && !isIE //判断是否IE的Edge浏览器
+        var isIE11 =
+          userAgent.indexOf("Trident") > -1 && userAgent.indexOf("rv:11.0") > -1
+        if (isIE) {
+          var reIE = new RegExp("MSIE (\\d+\\.\\d+);")
+          reIE.test(userAgent)
+          var fIEVersion = parseFloat(RegExp["$1"])
+          if (fIEVersion == 7) {
+            return 7
+          } else if (fIEVersion == 8) {
+            return 8
+          } else if (fIEVersion == 9) {
+            return 9
+          } else if (fIEVersion == 10) {
+            return 10
+          } else {
+            return 6 //IE版本<=7
+          }
+        } else if (isEdge) {
+          return "edge" //edge
+        } else if (isIE11) {
+          return 11 //IE11
+        } else {
+          return -1 //不是ie浏览器
+        }
+      }
+    </script>
+  </body>
+</html>

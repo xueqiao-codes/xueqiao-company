@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>雪橇交易系统</title>
+    <link href="./public/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./public/css/common.css" rel="stylesheet">
+    <link href="./public/img/logo60.png" rel="shortcut icon" />
+        <link href="./public/css/login.css" rel="stylesheet">
+
+</head>
+<body>
+    <div class="reg_page" id="reg_page">
+  <div class="card">
+    <h3 class="card-title">账户注册</h3>
+    <div class="form">
+      <h5 class="card-title">已有账号？<a href="/login.html">登录</a></h5>
+      <div class="form-group">
+        <label for="regEmail"><span>*</span>邮箱</label>
+        <input type="email" class="form-control" id="regEmail" aria-describedby="emailHelp" placeholder="" v-model="email" @blur="checkEmail">
+        <span class="form_tips" v-bind:class="[email_reg? 'right': 'wrong']" v-if="emailValid===true"><img :src="'./public/img/'+validImgEmail+'@3x.png'" />{=emailValidMsg}</span>
+      </div>
+      <div class="form-group">
+        <label for="regPwd"><span>*</span>密码</label>
+        <input type="password" class="form-control" id="regPwd" placeholder="" v-model="pwd" @blur="cheakPwd">
+        <span class="form_tips" v-bind:class="[pwd_reg? 'right': 'wrong']" v-if="pwdValid===true"><img :src="'./public/img/'+validImgPwd+'@3x.png'" />{=pwdValidMsg}</span>
+        <small class="form-text text-muted">6-20位字母和数字组合</small>
+      </div>
+      <div class="form-group">
+        <label for="regConPwd"><span>*</span>确认密码</label>
+        <input type="password" class="form-control" id="regConPwd" placeholder="" v-model="vpwd" @blur="verifyPwd">
+        <span class="form_tips" v-bind:class="[vpwd_reg? 'right': 'wrong']" v-if="vpwdValid===true"><img :src="'./public/img/'+validImgVpwd+'@3x.png'" />{=vpwdValidMsg}</span>
+      </div>
+      <div class="form-group">
+        <label for="regName"><span>*</span>联系人</label>
+        <input type="text" class="form-control" id="regName" placeholder="" v-model="contact" @blur="checkContact">
+        <span class="form_tips" v-bind:class="[contact_reg? 'right': 'wrong']" v-if="contactValid===true"><img :src="'./public/img/'+validImgContact+'@3x.png'" />{=contactValidMsg}</span>
+      </div>
+      <div class="form-group">
+        <label for="regPhone"><span>*</span>手机</label>
+        <input type="text" class="form-control" id="regPhone" placeholder="" v-model="tel" @blur="checkTel">
+        <span class="form_tips" v-bind:class="[tel_reg? 'right': 'wrong']" v-if="telValid===true"><img :src="'./public/img/'+validImgTel+'@3x.png'" />{=telValidMsg}</span>
+      </div>
+      <div class="form-group">
+        <label for="regCode"><span>*</span>验证码</label>
+        <input type="text" class="form-control" id="regCode" placeholder="" v-model="verify_code">
+        <a href="javascript:;" class="btn btn-primary get_code" @click="getTelVerifyCode" v-bind:disabled="vbtnDisabled">获取验证码&nbsp;{=time}</a>
+        <span class="form_tips right" v-if="getVerifyMsg"><img :src="'./public/img/right@3x.png'" />验证码已发送</span>
+        <small class="form-text text-muted">收不到验证码？<a href="javascript:;">联系客服</a></small>
+      </div>
+      <div class="form-group">
+        <label for="regCom">公司名称</label>
+        <input type="text" class="form-control" id="regCom" placeholder="" v-model="company_name">
+      </div>
+      <div class="clearfix"></div>
+      <small class="form-text text-muted read">
+        <input class="form-check-input" type="checkbox" value="option">
+        我已经阅读并同意
+        <a href="javascript:;">《隐私条款》</a>
+        和
+        <a href="javascript:;">《服务条款》</a>
+      </small>
+      <div style="" class="form-group">
+        <button class="btn btn-primary sub_btn" v-on:click="signUp" v-bind:disabled="btnDisabled">注册</button>
+        <span class="form_tips wrong" v-if="signUpTips"><img :src="'./public/img/wrong@3x.png'" />{=signUpTipsMsg}</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+    <script src="./public/js/jquery.min.js"></script>
+    <script src="./public/js/vue.min.js"></script>
+    <script src="./public/js/tether.min.js"></script>
+    <script src="./public/js/bootstrap.min.js"></script>
+    <script src="./public/js/js.cookie.js"></script>
+    <script src="./public/js/common.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,108 @@
+.fragment-bg {
+  /* position: relative; */
+  left: 0;
+  top: 0;
+  height: 1020px;
+  width: 100vw;
+  min-width: 1920px;
+  min-height: 900px;
+  /* margin-top: 60px; */
+  background-color: rgba(0, 0, 0, 0);
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  flex-direction: column;
+}
+.fragment-sub-bg {
+  width: 1200px;
+  height: 100vh;
+  min-height: 900px;
+  background-color: rgba(255, 255, 255, 1);
+  box-shadow: 0px 5px 5px #eeeeee;
+}
+.fragment-title {
+  height: 24px;
+  line-height: 25px;
+  margin-left: 340px;
+  margin-top: 30px;
+  color: rgba(80, 80, 80, 1);
+  font-size: 24px;
+  text-align: left;
+  font-family: STHeitiSC-Medium;
+}
+.fragment-hint {
+  width: 320px;
+  margin-left: 440px;
+  margin-top: 30px;
+  text-align: left;
+}
+.fragment-hint-with-errorinfo {
+  width: 320px;
+  margin-left: 440px;
+  margin-top: 9px;
+  text-align: left;
+}
+.fragment-info-item {
+  margin-left: 340px;
+  margin-top: 30px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+}
+.fragment-info-item-with-errorinfo {
+  margin-left: 340px;
+  margin-top: 9px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+}
+.fragment-info-key {
+  width: 100px;
+  color: rgba(48, 48, 48, 1);
+  font-size: 16px;
+  text-align: left;
+  font-family: STHeitiSC-Light;
+}
+.fragment-info-value {
+  width: 300px;
+}
+.fragment-info-description {
+  width: 360px;
+  height: 32px;
+  margin-left: 25px;
+  line-height: 16px;
+  color: rgba(144, 144, 144, 1);
+  font-size: 14px;
+  text-align: left;
+  font-family: STHeitiSC-Light;
+}
+.fragment-info-error-item {
+  margin-left: 440px;
+  margin-top: 5px;
+  height: 16px;
+  line-height: 16px;
+  color: rgba(255, 64, 64, 1);
+  font-size: 14px;
+  text-align: left;
+  font-family: STHeitiSC-Light;
+}
+.fragment-button-wrapper {
+  width: 320px;
+  margin-top: 20px;
+  margin-left: 440px;
+}
+.fragment-button {
+  width: 320px;
+}
+.fragment-manager {
+  background-color: rgba(255, 255, 255, 1);
+  min-width: 1390px;
+}
+.manager-content {
+  margin-left: 30px;
+  margin-top: 20px;
+  height: 750px;
+}
+.manager-table {
+  width: 1329px;
+}

@@ -1,0 +1,19 @@
+table{
+table-layout: fixed;
+word-break: break-all;
+word-wrap: break-word;
+}
+.table td{
+ font-style: normal;
+ font-weight: normal;
+ text-align:center;
+}
+.table th {
+ font-style: normal;
+ font-weight: normal;
+ text-align:center;
+ background:#F8FCFF;
+}
+.bootstrap-table {
+ width: 100%;
+}
